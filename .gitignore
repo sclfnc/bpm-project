@@ -1,0 +1,24 @@
+# Not tracked: these rebuild, download, or belong to the editor. README.md
+# carries the recipes.
+.venv/
+node_modules/
+bpmn2petrinet/
+proM-lite/
+__pycache__/
+.vscode/
+
+# LaTeX auxiliaries. main.synctex.gz is anchored at the root because $out_dir
+# sends it there, past the LaTeX/ rules.
+LaTeX/*.aux
+LaTeX/*.bbl
+LaTeX/*.blg
+LaTeX/*.fdb_latexmk
+LaTeX/*.fls
+LaTeX/*.log
+LaTeX/*.out
+LaTeX/*.run.xml
+LaTeX/*.synctex.gz
+LaTeX/*.toc
+LaTeX/pdflatex*.fls
+LaTeX/texput.log
+/main.synctex.gz
