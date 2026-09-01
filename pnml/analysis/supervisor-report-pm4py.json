@@ -1,0 +1,78 @@
+{
+  "net": "supervisor.pnml",
+  "images": {
+    "pnml": "img/supervisor-pnml-pm4py.pdf",
+    "reachability": "img/supervisor-reachability-pm4py.pdf"
+  },
+  "places": 16,
+  "transitions": 21,
+  "arcs": 42,
+  "source_places": [
+    "start_p_Proc_D"
+  ],
+  "sink_places": [
+    "end_p_Proc_D"
+  ],
+  "initial_marking": {
+    "start_p_Proc_D": 1
+  },
+  "final_marking": {
+    "end_p_Proc_D": 1
+  },
+  "sound": true,
+  "reachability_graph_states_on_short_circuit": 16,
+  "reachability_graph_transitions_on_short_circuit": 22,
+  "live_on_short_circuit": true,
+  "bounded": true,
+  "safe": true,
+  "max_tokens_in_any_place": 1,
+  "places_holding_more_than_one_token": [],
+  "dead_tasks": [],
+  "deadlock_scenarios": 0,
+  "pt_handles_open": 0,
+  "tp_handles_open": 0,
+  "pt_handles_short_circuit": 0,
+  "tp_handles_short_circuit": 0,
+  "pt_handle_pairs_short_circuit": [],
+  "tp_handle_pairs_short_circuit": [],
+  "messages": [
+    "Input is ok.",
+    "Petri Net is a workflow net.",
+    "Every place is covered by s-components.",
+    "There are no dead tasks.",
+    "All tasks are live."
+  ],
+  "workflow_net": true,
+  "free_choice": true,
+  "conflicting_pairs": 0,
+  "free_choice_violations": [],
+  "s_net": true,
+  "transitions_not_one_in_one_out": [],
+  "t_net_on_short_circuit": false,
+  "places_not_one_in_one_out": [
+    "D_ebg0",
+    "D_ebg1",
+    "D_ebg_date",
+    "D_g_decide",
+    "D_g_fin",
+    "D_j_date",
+    "D_loop_join",
+    "end_p_Proc_D"
+  ],
+  "transitions_with_empty_preset": [],
+  "transitions_with_empty_postset": [],
+  "arcs_with_non_standard_weight": [],
+  "connected_components_of_short_circuit": 1,
+  "strongly_connected_components_of_short_circuit": 1,
+  "s_coverable": true,
+  "places_in_no_s_component": [],
+  "rank_theorem": {
+    "every_proper_siphon_marked": true,
+    "largest_unmarked_siphon": [],
+    "positive_s_invariant": true,
+    "positive_t_invariant": true,
+    "rank_of_incidence_matrix": 15,
+    "clusters": 16,
+    "rank_equals_clusters_minus_one": true
+  }
+}

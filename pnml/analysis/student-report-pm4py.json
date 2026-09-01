@@ -1,0 +1,83 @@
+{
+  "net": "student.pnml",
+  "images": {
+    "pnml": "img/student-pnml-pm4py.pdf",
+    "reachability": "img/student-reachability-pm4py.pdf"
+  },
+  "places": 25,
+  "transitions": 33,
+  "arcs": 66,
+  "source_places": [
+    "start_p_Proc_S"
+  ],
+  "sink_places": [
+    "end_p_Proc_S"
+  ],
+  "initial_marking": {
+    "start_p_Proc_S": 1
+  },
+  "final_marking": {
+    "end_p_Proc_S": 1
+  },
+  "sound": true,
+  "reachability_graph_states_on_short_circuit": 25,
+  "reachability_graph_transitions_on_short_circuit": 34,
+  "live_on_short_circuit": true,
+  "bounded": true,
+  "safe": true,
+  "max_tokens_in_any_place": 1,
+  "places_holding_more_than_one_token": [],
+  "dead_tasks": [],
+  "deadlock_scenarios": 0,
+  "pt_handles_open": 0,
+  "tp_handles_open": 0,
+  "pt_handles_short_circuit": 0,
+  "tp_handles_short_circuit": 0,
+  "pt_handle_pairs_short_circuit": [],
+  "tp_handle_pairs_short_circuit": [],
+  "messages": [
+    "Input is ok.",
+    "Petri Net is a workflow net.",
+    "Every place is covered by s-components.",
+    "There are no dead tasks.",
+    "All tasks are live."
+  ],
+  "workflow_net": true,
+  "free_choice": true,
+  "conflicting_pairs": 0,
+  "free_choice_violations": [],
+  "s_net": true,
+  "transitions_not_one_in_one_out": [],
+  "t_net_on_short_circuit": false,
+  "places_not_one_in_one_out": [
+    "S_ebg1",
+    "S_ebg2",
+    "S_ebg_fin",
+    "S_ebg_pd",
+    "S_g_choice",
+    "S_g_cmerge",
+    "S_g_date",
+    "S_g_date2",
+    "S_j_date",
+    "S_j_pdate",
+    "S_loop_join",
+    "S_loop_split",
+    "end_p_Proc_S"
+  ],
+  "transitions_with_empty_preset": [],
+  "transitions_with_empty_postset": [],
+  "arcs_with_non_standard_weight": [],
+  "connected_components_of_short_circuit": 1,
+  "strongly_connected_components_of_short_circuit": 1,
+  "s_coverable": true,
+  "places_in_no_s_component": [],
+  "rank_theorem": {
+    "every_proper_siphon_marked": true,
+    "largest_unmarked_siphon": [],
+    "positive_s_invariant": true,
+    "positive_t_invariant": true,
+    "rank_of_incidence_matrix": 24,
+    "clusters": 25,
+    "rank_equals_clusters_minus_one": true
+  }
+}
