@@ -1,0 +1,14 @@
+{
+  "name": "bpm-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "P29 Tesi: BPMN validation harness for the project models",
+  "scripts": {
+    "lint": "bpmnlint ../../bpmn/*.bpmn"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "bpmnlint": "^11.12.1"
+  }
+}
