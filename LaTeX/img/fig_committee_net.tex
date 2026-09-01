@@ -7,10 +7,12 @@
     lb/.style={font=\scriptsize\sffamily, text=black!60, inner sep=1.2pt},
   ]
   \begin{scope}[on background layer]
-    \draw[unipiblue, opacity=0.16, line width=4.2mm, line cap=round, line join=round, rounded corners=2mm]
-      (0,0) -- (3,0) -- (4,0.5) -- (6,0.5) -- (7,0) -- (18,0);
-    \draw[unipiblue, opacity=0.16, line width=4.2mm, line cap=round, line join=round, rounded corners=2mm]
-      (0,0) -- (3,0) -- (4,-0.5) -- (6,-0.5) -- (7,0) -- (18,0);
+    \draw[black!55, opacity=0.26, line width=3.6mm, line cap=round, line join=round, rounded corners=2mm]
+      (0.15,0.1) -- (3,0.1) -- (4,0.5) -- (6,0.5) -- (7,0.1) -- (17.85,0.1)
+      -- (17.85,-1.22) -- (0.15,-1.22) -- cycle;
+    \draw[unipiblue, opacity=0.26, line width=3.6mm, line cap=round, line join=round, rounded corners=2mm]
+      (-0.15,-0.1) -- (3,-0.1) -- (4,-0.5) -- (6,-0.5) -- (7,-0.1) -- (18.15,-0.1)
+      -- (18.15,-1.44) -- (-0.15,-1.44) -- cycle;
   \end{scope}
   \node[pl] (i)  at (0,0) {$i$};
   \node[tr] (t1) at (1,0) {$t_1$};
@@ -39,10 +41,13 @@
   \foreach \a/\b in {i/t1,t1/p1,p1/t2,t2/s1,t2/c1,s1/tS,tS/s2,s2/t4,c1/tC,tC/c2,c2/t4,
                      t4/p4,p4/t5,t5/p5,p5/t6,t6/p6,p6/t7,t7/p7,p7/t8,t8/p8,p8/t9,t9/o}
     \draw[ar] (\a)--(\b);
+  \node[tr, dashed] (r) at (9,-1.33) {$r$};
+  \draw[ar, dashed, rounded corners=3pt] (o) -- (18,-1.33) -- (r);
+  \draw[ar, dashed, rounded corners=3pt] (r) -- (0,-1.33) -- (i);
   \end{tikzpicture}
-  \caption{The committee's workflow net, with the names this section uses. The two
-    tinted tracks are its two S-components, one per arm. Its reachability graph
-    runs two edges past the transitions of $N^*$, because each evaluation
-    receipt fires in either order.}
+  \caption{The committee's net with the reset transition $r$ dashed, the arc that
+    closes it into $N^*$. The two tinted tracks are its two S-components, one per
+    arm. The reachability graph runs two edges past the transitions of $N^*$,
+    because each evaluation receipt fires in either order.}
   \label{fig:committee_net}
 \end{figure}

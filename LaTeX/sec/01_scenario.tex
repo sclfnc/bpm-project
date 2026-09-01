@@ -18,12 +18,12 @@ The assignment above describes the thesis-preparation process with few gaps, and
 \begin{itemize}
   \item \textbf{Exchanging objects and scheduling meetings at once} is never addressed, and we keep the two exclusive.
   \item \textbf{No one is appointed to call the thesis complete}, so we give that verdict to the supervisor and leave the student to ask for it.
-  \item \textbf{Nothing prompts the two evaluations}, and we fix one for each: the supervisor sends on approving the thesis, the counter-examiner once the presentation is settled or waived.
+  \item \textbf{Nothing prompts the supervisor's evaluation}, and we fix a trigger for each: the supervisor sends on approving the thesis, the counter-examiner once the presentation is settled or waived.
   \item \textbf{The examination is not ordered against the two evaluations}, and we have the committee convoke the student only after both have arrived.
 \end{itemize}
 
 
-We model the scenario in BPMN, translate each diagram into a workflow net, and run the same checks twice: on each pool alone (\cref{sec:pools}), then on the four composed (\cref{sec:global}). The two answers diverge, and that divergence is the report's subject: every pool is sound by itself, while the collaboration is not. \Cref{tab:compliance} maps each requirement of the assignment to the place that discharges it, and \cref{tab:tools} lists the tools.
+We model the scenario in BPMN, translate each diagram into a workflow net, and run the same checks twice: on each pool alone (\cref{sec:pools}), then on the four composed (\cref{sec:global}). The two answers diverge, and that divergence is the report's subject: every pool is sound by itself, while the collaboration is not. \Cref{tab:compliance} lists what the report provides and where it sits, and \cref{tab:tools} lists the tools.
 
 \begin{table}[htbp]
   \centering
@@ -31,7 +31,7 @@ We model the scenario in BPMN, translate each diagram into a workflow net, and r
   \rowcolors{2}{}{rowshade}
   \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.76\linewidth}>{\raggedright\arraybackslash}p{\dimexpr0.24\linewidth-2\tabcolsep\relax}@{}}
     \toprule
-    \textbf{What the assignment asks} & \textbf{Where} \\
+    \textbf{What the report provides} & \textbf{Where} \\
     \midrule
     the design choices & \cref{sec:scenario,sec:models} \\
     processes that faithfully mirror the scenario & \cref{sec:models} \\
@@ -42,13 +42,13 @@ We model the scenario in BPMN, translate each diagram into a workflow net, and r
     an estimate of the reachability-graph size in vertices and arcs & \cref{sec:pools,sec:global} \\
     soundness of each participant's orchestration & \cref{sec:pools} \\
     soundness of the whole collaboration & \cref{sec:global} \\
-    if no sound overall process is possible: the reason, with relaxed and weak soundness & \cref{sec:global} \\
+    why no faithful process is sound, with relaxed and weak soundness & \cref{sec:global} \\
     \midrule
     diagrams and nets in a standard interchange format & \texttt{bpmn/}, \texttt{pnml/} \\
     analysis output and reachability-graph images & \texttt{pnml/analysis/}, \texttt{pnml/img/} \\
     \bottomrule
   \end{tabular}
-  \caption{Every requirement of the assignment against the place that discharges it.}
+  \caption{What the report provides, and where each piece sits.}
   \label{tab:compliance}
 \end{table}
 

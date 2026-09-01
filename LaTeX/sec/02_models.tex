@@ -4,12 +4,12 @@
 
 \input{img/fig_collaboration}
 
-\Cref{fig:collaboration} is the whole model: one row per participant, four orchestrations in all (\cref{sec:orchestrations}), running together through the four phases of the collaboration (\cref{sec:collaboration}). No wait in it carries a deadline, since we assume every participant answers in the end, so the model has no timer and no branch for an answer that never comes.
+\Cref{fig:collaboration} draws the whole model: one row per participant, four orchestrations in all (\cref{sec:orchestrations}), running together through the four phases of the collaboration (\cref{sec:collaboration}). No wait in it carries a deadline: we assume every participant answers in the end, so the model has no timer and no branch for an answer that never comes.
 
 \subsection{Orchestrations}
 \label{sec:orchestrations}
 
-In each orchestration, and in the collaboration, a joint act takes a task only where the messages alone do not show it happened. When both participants send or receive the message that settles it, as with the acceptance of a meeting date, it takes none. If only one side sends, as with the convocation to the examination, nothing shows that the student attended, and the act takes a task on each side. \Cref{tab:elements} counts the elements of each orchestration.
+In each orchestration, and in the collaboration, a joint act takes a task only where the messages alone do not show it happened. When one participant sends the message that settles it and the other receives, as with the acceptance of a meeting date, it takes none. If only one side sends, as with the convocation to the examination, nothing shows that the student attended, and the act takes a task on each side. \Cref{tab:elements} counts the elements of each orchestration.
 
 \begin{table}[!h]
   \centering
@@ -41,9 +41,9 @@ Once the supervisor approves, the student registers for the graduation call and 
 
 \textbf{Supervisor} (\texttt{bpmn/supervisor.bpmn}). The student's withdrawal closes this orchestration at once. Otherwise it mirrors the student's, with one wait for the three branches a round can take and another after the supervisor counter-proposes a date. It ends when the supervisor writes the evaluation and sends it to the committee.
 
-\textbf{Counter-examiner} (\texttt{bpmn/counter-examiner.bpmn}). \textsf{Read Thesis} precedes the XOR-split \textsf{Presentation Needed?}. The counter-examiner either waives the meeting or asks for one and proposes a date, which the student confirms or counters until both agree. The branches merge, and \textsf{Write Evaluation} follows, so whatever the presentation settles reaches the evaluation.
+\textbf{Counter-examiner} (\texttt{bpmn/counter-examiner.bpmn}). \textsf{Read Thesis} precedes the XOR-split \textsf{Presentation Needed?}. The counter-examiner either waives the meeting or asks for one and proposes a date, which the student confirms or counters until both agree. The branches merge, and \textsf{Write Evaluation} follows on either.
 
-\textbf{Committee} (\texttt{bpmn/committee.bpmn}). Nothing orders the supervisor's evaluation against the counter-examiner's, and the assignment makes the examination and the reading two prerequisites of the same meeting, so the orchestration waits for the two evaluations in parallel and joins before convoking the student. That is the one AND in the model.
+\textbf{Committee} (\texttt{bpmn/committee.bpmn}). Nothing orders the supervisor's evaluation against the counter-examiner's, and the assignment does not order the examination against either. We wait for the two evaluations in parallel and join before convoking the student, the one AND split and join in the model.
 
 \subsection{Collaboration}
 \label{sec:collaboration}
@@ -95,20 +95,19 @@ Twenty-seven message flows wire the four pools in the collaboration (\cref{tab:m
     27 & $m_{15}$ & $\mathrm{comm}$ & $\mathrm{stud}$ & grade & Graduation & \ck \\
     \bottomrule
   \end{tabular}
-  \caption{Message inventory: twenty-seven flows in the delivered model, each with exactly one sender and one receiver, so the four modules are structurally compatible and compose. $\mathrm{stud}$ is the student, $\mathrm{sup}$ the supervisor, $\mathrm{cex}$ the counter-examiner and $\mathrm{comm}$ the committee. The last column marks whether the assignment names a message; the unmarked ones are ours.}
+  \caption{The delivered model carries twenty-seven message flows, each with exactly one sender and one receiver, and no interface dangles. $\mathrm{stud}$ is the student, $\mathrm{sup}$ the supervisor, $\mathrm{cex}$ the counter-examiner and $\mathrm{comm}$ the committee. The last column marks whether the assignment names a message; the unmarked ones are ours.}
   \label{tab:messages}
 \end{table}
 
 \subsection{Deriving the nets}
 \label{sec:transformation}
 
-\texttt{bpmnlint} reports nothing on the six diagrams, and \texttt{bpmn2petrinet} then translates them with \texttt{withCollapsedXor} on. Every exclusive and event-based gateway collapses into one place, and its branches compete on that place; every other node becomes a transition. A sequence flow becomes a place between two transitions, or a plain arc where a collapsed gateway sits at one end. We drive the converter headless from \texttt{scripts/03\_to\_pnml.py}, so no step between diagram and net is manual.\footnote{The converter departs from the PNML schema in two places: it writes \texttt{<position>} where the schema asks for \texttt{<offset>}, and it leaves the \texttt{<net>} without the \texttt{id} and \texttt{type} the standard requires. We repair both. Neither changes the analysis, since \texttt{pm4py} reads the file either way; they are there for the tools that validate before reading and return nothing on a file that fails.}
+\texttt{bpmnlint} reports nothing on the six diagrams, the collaboration, its four pools and the variant of \cref{sec:global:fix}, and \texttt{bpmn2petrinet} then translates them with \texttt{withCollapsedXor} on. Every exclusive and event-based gateway collapses into one place, and its branches compete on that place; every other node becomes a transition. A sequence flow becomes a place between two transitions, or a plain arc where a collapsed gateway sits at one end. We drive the converter headless from \texttt{scripts/03\_to\_pnml.py}, so no step between diagram and net is manual.\footnote{The converter departs from the PNML schema in two places: it writes \texttt{<position>} where the schema asks for \texttt{<offset>}, and it leaves the \texttt{<net>} without the \texttt{id} and \texttt{type} the standard requires. We repair both. Neither changes the analysis, since \texttt{pm4py} reads the file either way; they are there for the tools that validate before reading and return nothing on a file that fails.}
 
 The tool builds the workflow net itself. It puts a source place in front of the start event and marks that place with one token, and it merges the end events of a process into a single sink, so the six pool ends become four. Every message flow gets one place, shared by the sending and the receiving transition and reused on every round. One transition then closes the collaboration, collecting the four pool sinks into a final place.
 
 \texttt{scripts/01\_extract\_pools.py} cuts each participant out of \texttt{bpmn/collaboration.bpmn} into a diagram of its own, so the analysis has both the collaboration and the four orchestrations from the same model. Read alone, an orchestration carries a source of its own and no message places; inside the collaboration the message places return, and the student's is the only source. \Cref{tab:consistency} reconciles the two readings, and its transitions follow from \cref{tab:elements} up to one correction: a flow that runs from one collapsed gateway into another would leave two places adjacent, so it becomes a transition of its own. There are two such flows in the student, two in the supervisor, one in the counter-examiner and none in the committee, which gives $43-12+2=33$ from 43 nodes and 12 collapsed gateways, and the same arithmetic for the rest. The places follow the same way: one for each collapsed gateway, one for each flow left with a transition at both ends, and the source and the sink, so $12+11+2=25$ for the student.
 
-\vfill
 \begin{table}[h]
   \centering
   \renewcommand{\arraystretch}{1.08}
