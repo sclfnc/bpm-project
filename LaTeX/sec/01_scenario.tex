@@ -1,0 +1,80 @@
+\section{Scenario and approach}
+\label{sec:scenario}
+\begin{assignment} Consider the (suitably simplified) scenario of the preparation of a degree thesis by a student.
+
+The student contacts a professor, expressing interest in writing a thesis in the professor's area of expertise. The professor proposes a set of possible topics, and the student either picks one or informs the professor that they are no longer interested in the thesis. If the professor has been chosen as supervisor, they send the student some material to study.
+
+After studying the topic, the student starts developing the thesis, periodically exchanging documents, chapter drafts and software prototypes with the supervisor, and scheduling meetings to discuss the work in depth. Each time the student sends an object, the supervisor replies by annotating the object with comments. Each time a meeting must be scheduled, the student proposes a date, which the supervisor may confirm or reject by proposing an alternative date, and so on until a date suits both.
+
+When the thesis is complete, the student sends it to a counter-examiner for evaluation. The counter-examiner may decide to schedule an appointment with the student for a direct presentation of the work, or deem such a meeting unnecessary. The date of the meeting, if any, is set as described above.
+
+The process ends when the supervisor and the counter-examiner send their evaluations to the committee which, after examining the student and reading the evaluations, meets to decide the graduation grade and communicates it to the student.
+
+Design suitable processes that faithfully mirror the scenario described above and that interact correctly.
+\end{assignment}
+
+The assignment above describes the thesis-preparation process with few gaps, and we close each one with a decision of our own.
+
+\begin{itemize}
+  \item \textbf{Exchanging objects and scheduling meetings at once} is never addressed, and we keep the two exclusive.
+  \item \textbf{No one is appointed to call the thesis complete}, so we give that verdict to the supervisor and leave the student to ask for it.
+  \item \textbf{Nothing prompts the two evaluations}, and we fix one for each: the supervisor sends on approving the thesis, the counter-examiner once the presentation is settled or waived.
+  \item \textbf{The examination is not ordered against the two evaluations}, and we have the committee convoke the student only after both have arrived.
+\end{itemize}
+
+
+We model the scenario in BPMN, translate each diagram into a workflow net, and run the same checks twice: on each pool alone (\cref{sec:pools}), then on the four composed (\cref{sec:global}). The two answers diverge, and that divergence is the report's subject: every pool is sound by itself, while the collaboration is not. \Cref{tab:compliance} maps each requirement of the assignment to the place that discharges it, and \cref{tab:tools} lists the tools.
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.08}
+  \rowcolors{2}{}{rowshade}
+  \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.76\linewidth}>{\raggedright\arraybackslash}p{\dimexpr0.24\linewidth-2\tabcolsep\relax}@{}}
+    \toprule
+    \textbf{What the assignment asks} & \textbf{Where} \\
+    \midrule
+    the design choices & \cref{sec:scenario,sec:models} \\
+    processes that faithfully mirror the scenario & \cref{sec:models} \\
+    processes that interact correctly & \cref{sec:collaboration,sec:global} \\
+    models drawn at an abstract level, then transformed into workflow nets & \cref{sec:models,sec:transformation} \\
+    how the transformation was obtained & \cref{sec:transformation} \\
+    invariants, S-components, free-choice, well-handled (well-structuredness), safeness & \cref{sec:pools,sec:global} \\
+    an estimate of the reachability-graph size in vertices and arcs & \cref{sec:pools,sec:global} \\
+    soundness of each participant's orchestration & \cref{sec:pools} \\
+    soundness of the whole collaboration & \cref{sec:global} \\
+    if no sound overall process is possible: the reason, with relaxed and weak soundness & \cref{sec:global} \\
+    \midrule
+    diagrams and nets in a standard interchange format & \texttt{bpmn/}, \texttt{pnml/} \\
+    analysis output and reachability-graph images & \texttt{pnml/analysis/}, \texttt{pnml/img/} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Every requirement of the assignment against the place that discharges it.}
+  \label{tab:compliance}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabular}{@{}p{1.3em}@{}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.3em\relax}@{}}
+    \toprule
+    \multicolumn{2}{@{}l@{}}{\textbf{Step and tool}} \\
+    \midrule
+    \multicolumn{2}{@{}l@{}}{\textbf{1.~Drawing} (\href{https://bpmn.io}{bpmn.io})} \\
+    & Visual Studio Code extension, editing native BPMN 2.0 XML. \\
+    \addlinespace[4pt]
+    \multicolumn{2}{@{}l@{}}{\textbf{2.~Validation} (\href{https://github.com/bpmn-io/bpmnlint}{\texttt{bpmnlint}} 11.12.1)} \\
+    & \href{https://github.com/bpmn-io/bpmnlint/blob/v11.12.1/config/all.js}{\texttt{bpmnlint:all}} in \texttt{scripts/lint/.bpmnlintrc}, run by \texttt{npm -{}-prefix scripts/lint run lint}. \\
+    \addlinespace[4pt]
+    \multicolumn{2}{@{}l@{}}{\textbf{3.~Transformation} (\href{https://bpmn2petrinet.com/}{bpmn2petrinet})} \\
+    & Browser tool, cloned from \href{https://github.com/BenjaNapo/bpmn-to-petri}{\texttt{BenjaNapo/bpmn-to-petri}} and driven headless by \texttt{scripts/03\_to\_pnml.py} with its \texttt{withCollapsedXor} setting on. \\
+    \addlinespace[4pt]
+    \multicolumn{2}{@{}l@{}}{\textbf{4.~Analysis} (\href{https://pm4py.fit.fraunhofer.de/}{pm4py} 2.7.23.6)} \\
+    & \texttt{pm4py}'s reimplementation of Woflan reached as a library by \texttt{scripts/04\_pm4py\_report.py}. WoPeD spreads the same figures across panels, so collecting them would take a script reading numbers off a screen. \\
+    \addlinespace[4pt]
+    \multicolumn{2}{@{}l@{}}{\textbf{5.~Rendering} (\texttt{pm4py} and \href{http://woped.dhbw-karlsruhe.de/woped/}{WoPeD})} \\
+    & \texttt{scripts/04\_pm4py\_report.py} draws each net and its reachability graph, WoPeD the same nets in a second layout, all under \texttt{pnml/img/}. \\
+    \bottomrule
+  \end{tabular}
+  \caption{The pipeline from diagram to analysis.}
+  \label{tab:tools}
+\end{table}
