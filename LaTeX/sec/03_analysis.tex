@@ -1,0 +1,113 @@
+\section{Analysis}
+\label{sec:analysis}
+
+Six nets face the same list of checks (\cref{tab:nets}): the four pools, the delivered collaboration, and one variant of it. \texttt{scripts/04\_pm4py\_report.py} runs them through \texttt{pm4py} and writes one JSON report each into \texttt{pnml/analysis/}.\footnote{Five of the results in those reports are the script's own and not Woflan's: the S-components, the Rank Theorem conditions, the free-choice verdict with its list of violations, the S-net and T-net verdicts, and the split of the not-well-handled pairs into PT and TP.}
+
+\vfill
+
+\begin{table}[h]
+  \centering
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+    & \multicolumn{4}{c}{\emph{per pool}} & \multicolumn{2}{c}{\emph{collaboration}} \\
+    \cmidrule(lr){2-5}\cmidrule(lr){6-7}
+    & \textbf{Student} & \textbf{Superv.} & \textbf{C-ex.} & \textbf{Comm.} & \textbf{delivered} & \textbf{variant} \\
+    \midrule
+    \multicolumn{7}{@{}l}{\emph{Size}} \\
+    \rowcolor{rowshade} \hspace{1em}places / transitions / arcs & 25/33/66 & 16/21/42 & 10/12/24 & 12/10/22 & 88/77/210 & 85/73/200 \\
+    \hspace{1em}reachability graph of $N^*$ & 25/34 & 16/22 & 10/13 & 12/13 & 712/1983 & 706/1975 \\
+    \addlinespace[5pt]
+    \midrule[\cmidrulewidth]
+    \addlinespace[2pt]
+    \multicolumn{7}{@{}l}{\emph{Workflow-net shape, on $N$}} \\
+    \rowcolor{rowshade} \hspace{1em}workflow net & \ck & \ck & \ck & \ck & \ck & \ck \\
+    \hspace{1em}properly initialised & \ck & \ck & \ck & \ck & \ck & \ck \\
+    \addlinespace[5pt]
+    \midrule[\cmidrulewidth]
+    \addlinespace[2pt]
+    \multicolumn{7}{@{}l}{\emph{Structural class}} \\
+    \rowcolor{rowshade} \hspace{1em}S-net, on $N$ & \ck & \ck & \ck & \cx & \cx & \cx \\
+    \hspace{1em}T-net, on $N^*$ & \cx & \cx & \cx & \ck & \cx & \cx \\
+    \rowcolor{rowshade} \hspace{1em}free-choice & \ck & \ck & \ck & \ck & \cx & \cx \\
+    \addlinespace[5pt]
+    \midrule[\cmidrulewidth]
+    \addlinespace[2pt]
+    \multicolumn{7}{@{}l}{\emph{Structure of $N^*$}} \\
+    \rowcolor{rowshade} \hspace{1em}PT- / TP-handles & 0/0 & 0/0 & 0/0 & 0/0 & 214/117 & 178/74 \\
+    \hspace{1em}well-structured & \ck & \ck & \ck & \ck & \cx & \cx \\
+    \rowcolor{rowshade} \hspace{1em}S-coverable & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \hspace{1em}positive S-invariant & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \rowcolor{rowshade} \hspace{1em}positive T-invariant & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \hspace{1em}Rank Theorem & \ck & \ck & \ck & \ck & --- & --- \\
+    \rowcolor{rowshade} \hspace{1em}rank / clusters & 24/25 & 15/16 & 9/10 & 10/11 & 69/60 & 65/58 \\
+    \addlinespace[5pt]
+    \midrule[\cmidrulewidth]
+    \addlinespace[2pt]
+    \multicolumn{7}{@{}l}{\emph{Verdict}} \\
+    \rowcolor{rowshade} \hspace{1em}safe & \ck & \ck & \ck & \ck & \ck & \ck \\
+    \hspace{1em}no dead tasks & \ck & \ck & \ck & \ck & \ck & \ck \\
+    \rowcolor{rowshade} \hspace{1em}live and bounded, on $N^*$ & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \hspace{1em}option to complete & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \rowcolor{rowshade} \hspace{1em}proper completion & \ck & \ck & \ck & \ck & \ck & \ck \\
+    \hspace{1em}relaxed sound & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \rowcolor{rowshade} \hspace{1em}\textbf{sound} & \ck & \ck & \ck & \ck & \cx & \ck \\
+    \bottomrule
+  \end{tabular}
+  \caption{Every net the report analyses. \emph{Variant} deletes the withdrawal branch and changes nothing else; it was built to test the diagnosis, not proposed (\cref{sec:global:fix}). $N^*$ is the short-circuit of the net in its own column. The Rank Theorem row is its four non-trivial conditions, since the other two hold for any connected net with a place and a transition, and it is blank where its free-choice hypothesis fails. The pipeline reports every row but the three above \emph{sound}, which follow from the Rank Theorem for the pools and from the reachability graph for the collaborations. Only the T-invariant row carries a verdict, and in one direction: on a bounded net its absence rules soundness out, its presence proves nothing.}
+  \label{tab:nets}
+\end{table}
+
+\subsection{Per pool}
+\label{sec:pools}
+
+The student, the supervisor and the counter-examiner branch on places alone, at their exclusive gateways and their event-based waits alike: each is an S-net, and so safe and sound. Each $N^*$ is a strongly connected S-net, so its whole place set forms a single S-component, and that component's uniform invariant, all ones, is positive. One token then marks one place at a time, so the reachability graph takes a vertex per place and an arc per transition of $N^*$, reset included. The $25/34$, $16/22$ and $10/13$ of \cref{tab:nets} follow from the place and transition counts in the same table.
+
+The committee branches on transitions instead, at its one AND split and join, so its $N^*$ is a T-net. Its AND split marks two places at once, so the arc half of that correspondence fails: thirteen arcs against eleven transitions. The vertex half survives, but by arithmetic alone. Eight singleton markings run along the shared spine, and the two states of each evaluation arm combine into four more: twelve in all, as many as the places.
+
+Neither shape admits a handle. A handle of either kind needs a branching place at one end and a branching transition at the other. An S-net has no branching transition, a T-net no branching place, so the pools carry $0/0$ and are well-structured (\cref{tab:nets}). All four are free-choice, so the Rank Theorem applies and decides liveness and boundedness of $N^*$ in polynomial time. Its four non-trivial conditions hold on each: no proper siphon starts unmarked, a positive S-invariant and a positive T-invariant exist, and the rank of the incidence matrix is one below the cluster count.
+
+\input{img/fig_committee_net}
+
+Two S-components cover the committee (\cref{fig:committee_net}), a shared spine and one evaluation arm each. Each has the uniform invariant of its own ten places, weight $1$ there and $0$ on the other arm. The two sum to $2$ along the spine and $1$ on each arm, the positive S-invariant the Rank Theorem asks for. The net is acyclic, so every circuit of $N^*$ closes through the reset transition and the marked source. Marked circuits are the one hypothesis the T-net theorem needs, and it settles safe and sound by the dual route.
+
+\subsection{The collaboration}
+\label{sec:global}
+
+Composed into one collaboration, the four pools keep none of the three structural properties they have alone, and the system is not sound (\cref{tab:nets}).
+
+\subsubsection{Free-choice, well-structuredness and S-coverability}
+
+\textbf{Free-choice} fails at the eight event-based waits. Alone, the receives of a wait share only that gateway's place, so their presets are equal. Composition gives every send a second output and every receive a second input, and the presets then overlap without being equal at ten pairs of receives.
+
+\textbf{Well-structuredness} fails at message passing. Every TP-handle starts at a send. Most PT-handles end on a receive, the rest at the closure and at the committee's join. One of those runs from the student's withdrawal choice to the closure, an exclusive split synchronised by an AND-join. That shape is the \textbf{deadlock}: the split delivers on one path, the join waits for both (\cref{sec:global:sound}).
+
+\textbf{S-coverability} fails at four places of $N^*$: the counter-examiner's and the committee's sinks, and the place before each. They lie in the support of no semi-positive S-invariant, and so in no S-component. Woflan reads its S-components off an invariant basis and overcounts. It names ten places here where four lie outside every S-component, and two on the variant where none do. Those four come from putting the question place by place. The missing S-cover shows nothing on its own: both theorems that would read a verdict from it need free-choice or well-structuredness, and neither holds.
+
+\subsubsection{Safeness and the size of the reachability graph}
+
+\textbf{Safeness} survives, and with it boundedness. Each pool is safe alone (\cref{tab:nets}). Composition adds the 27 message places and the final place, which only the closure marks. Sixteen of the message places lie on no circuit, and neither do their producers, so those sends fire once per case. The other eleven are kept safe by the strict alternation of one send and one reply on the development channels and by the propose-and-wait shape of the date negotiation itself (\cref{sec:models}). That exhausts what composition adds, and none of those places reaches two tokens.
+
+A marking of the composition is one marking per pool plus the messages in flight. Each pool's share of it, when not empty, is a marking that pool reaches alone. Three pools have no source place inside the collaboration (\cref{tab:consistency}), so their empty state takes the slot their standalone initial marking held and their counts do not move. The student keeps its source and gains the empty marking the closure leaves behind. The four graph sizes of \cref{tab:nets} then bound the shares: at most $26 \cdot 16 \cdot 10 \cdot 12 = 5.0 \cdot 10^4$ combinations, a bound on those and not on $|V|$. On $N^*$ the graph has $|V| = 712$, so at most one combination in seventy is ever reached, and $|E| = 1983$ gives 2.8 arcs per marking. Synchronisation is what collapses the count: a pool advances only when its partner has moved. The pools do not take turns, since in most markings all four hold a token and still cannot move independently.
+
+\subsubsection{Soundness, weak and relaxed}
+\label{sec:global:sound}
+
+$N^*$ is safe, and so bounded: no place holds two tokens in any of its 712 markings. It has no positive T-invariant (\cref{tab:nets}), and a live and bounded system has one, so $N^*$ is not live. A workflow net is sound exactly when its short circuit is live and bounded: the collaboration is not sound.
+
+Four transitions make the withdrawal branch. The student withdraws and closes, the supervisor receives it and closes, and their two sinks are the only marked places left. The thesis instantiates the counter-examiner, and the graduation registration instantiates the committee. A withdrawing student sends neither, so neither pool ever starts. The closure asks for all four sinks and finds two, so nothing can fire and the final place stays unreachable. No other marking of $N^*$ is dead.
+
+That failure is \emph{option to complete}, the clause asking every reachable marking to leave a path to the final place. The other two hold: no task is dead (\cref{tab:nets}), and \emph{proper completion} survives because the single reachable marking that marks it carries no other token. \emph{Weak soundness} forgives dead tasks and nothing else, a licence this net never needed, so it fails on the same clause. \emph{Relaxed soundness} drops all three and asks each transition for one run from the source to the final place; the four transitions of the withdrawal branch have none, by the run just given.
+
+\subsubsection{Three modifications, and the limit of the encoding}
+\label{sec:global:fix}
+
+The closure is not the cause. A workflow system closes on both ends, and its source transition would mark every pool's initial place, so the counter-examiner and the committee would hold a token on every run. On the withdrawal branch that token waits at their message start event and never moves, and the same deadlock stands. The join is forced too: all six pool end events are plain, so nothing else can mark the final place. A net without it has four sinks and is not a workflow net at all. Three modifications would remove the deadlock. Two add machinery the assignment does not describe; the third removes a case it does describe, and only that one exists as a net, \texttt{bpmn/collaboration-no-withdrawal.bpmn}.
+
+\begin{itemize}
+  \item \textbf{Loop the withdrawal back to the topic proposal} instead of ending there. The branch no longer reaches a sink, so nothing waits on it. But the assignment has the student lose interest in the thesis, not in the list. Looping sends them back to the same supervisor for another topic, and an exit becomes a second round the text never describes.
+  \item \textbf{Add two messages} telling the counter-examiner and the committee that the case is closed. Each pool is then instantiated only to end at once, so all four sinks are marked and the closure fires. But on that branch the student has engaged neither, so the closing message would be their first contact.
+  \item \textbf{Delete the withdrawal branch.} The net is then sound (\cref{tab:nets}): the S-cover and both invariants return, while free-choice and well-structuredness stay broken. Message passing is what breaks them, and the withdrawal accounts for one of the ten pairs. It invents no round and no channel, and the case it removes sits ahead of the core, before a topic is even picked. But the assignment states that case in the same sentence as the one it keeps, so the net is sound but not faithful to it.
+\end{itemize}
+
+No model that leaves two of the four sinks unmarked and still joins all four can be sound. A model that keeps every case the assignment states, inventing no message and no round, leaves two sinks unmarked and joins all four. The withdrawal is in the assignment, no message it describes starts the counter-examiner or the committee on that branch, and the transformation closes a collaboration by joining every pool sink into one final place. That join is also a limit on what the net can say. Soundness asks for one final marking, and joining the four sinks is the only way this collaboration can report completion. An unmarked sink then reads the same whether its pool never started or has not finished. The withdrawn case ends cleanly for the two participants it involves, and the encoding cannot say so.

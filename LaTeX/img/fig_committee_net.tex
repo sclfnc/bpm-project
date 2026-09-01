@@ -1,0 +1,48 @@
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[x=8.5mm, y=1.05cm,
+    pl/.style={circle, draw, minimum size=6.2mm, inner sep=0pt, font=\tiny},
+    tr/.style={rectangle, draw, minimum size=5.6mm, inner sep=0pt, font=\tiny},
+    ar/.style={-{Stealth[length=3.6pt]}, shorten >=0.6pt, shorten <=0.6pt},
+    lb/.style={font=\scriptsize\sffamily, text=black!60, inner sep=1.2pt},
+  ]
+  \begin{scope}[on background layer]
+    \draw[unipiblue, opacity=0.16, line width=4.2mm, line cap=round, line join=round, rounded corners=2mm]
+      (0,0) -- (3,0) -- (4,0.5) -- (6,0.5) -- (7,0) -- (18,0);
+    \draw[unipiblue, opacity=0.16, line width=4.2mm, line cap=round, line join=round, rounded corners=2mm]
+      (0,0) -- (3,0) -- (4,-0.5) -- (6,-0.5) -- (7,0) -- (18,0);
+  \end{scope}
+  \node[pl] (i)  at (0,0) {$i$};
+  \node[tr] (t1) at (1,0) {$t_1$};
+  \node[pl] (p1) at (2,0) {$p_1$};
+  \node[tr] (t2) at (3,0) {$t_2$};
+  \node[pl] (s1) at (4, 0.5) {$p_2^{s}$};
+  \node[tr] (tS) at (5, 0.5) {$t_3^{s}$};
+  \node[pl] (s2) at (6, 0.5) {$p_3^{s}$};
+  \node[pl] (c1) at (4,-0.5) {$p_2^{c}$};
+  \node[tr] (tC) at (5,-0.5) {$t_3^{c}$};
+  \node[pl] (c2) at (6,-0.5) {$p_3^{c}$};
+  \node[lb, above=0mm of tS] {supervisor};
+  \node[lb, below=0mm of tC] {counter-examiner};
+  \node[tr] (t4) at (7,0) {$t_4$};
+  \node[pl] (p4) at (8,0) {$p_4$};
+  \node[tr] (t5) at (9,0) {$t_5$};
+  \node[pl] (p5) at (10,0) {$p_5$};
+  \node[tr] (t6) at (11,0) {$t_6$};
+  \node[pl] (p6) at (12,0) {$p_6$};
+  \node[tr] (t7) at (13,0) {$t_7$};
+  \node[pl] (p7) at (14,0) {$p_7$};
+  \node[tr] (t8) at (15,0) {$t_8$};
+  \node[pl] (p8) at (16,0) {$p_8$};
+  \node[tr] (t9) at (17,0) {$t_9$};
+  \node[pl] (o)  at (18,0) {$o$};
+  \foreach \a/\b in {i/t1,t1/p1,p1/t2,t2/s1,t2/c1,s1/tS,tS/s2,s2/t4,c1/tC,tC/c2,c2/t4,
+                     t4/p4,p4/t5,t5/p5,p5/t6,t6/p6,p6/t7,t7/p7,p7/t8,t8/p8,p8/t9,t9/o}
+    \draw[ar] (\a)--(\b);
+  \end{tikzpicture}
+  \caption{The committee's workflow net, with the names this section uses. The two
+    tinted tracks are its two S-components, one per arm. Its reachability graph
+    runs two edges past the transitions of $N^*$, because each evaluation
+    receipt fires in either order.}
+  \label{fig:committee_net}
+\end{figure}
