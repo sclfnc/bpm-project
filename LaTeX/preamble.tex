@@ -1,0 +1,144 @@
+% Standalone preamble for the P29 project report.
+% Deliberately NOT the notes housestyle: minimal package set, article class.
+% Conventions kept from the collection standard: booktabs three-rule tables,
+% \cref only, $...$ / \[...\] math delimiters, \emph emphasis, no em-dashes.
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+% Sans body, coherent with the sans labels of the exported diagrams, with
+% matching sans math from newtxsf.
+\usepackage[sfdefault, lining, light]{FiraSans}
+\usepackage{newtxsf}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\definecolor{unipiblue}{RGB}{20, 74, 144} % sampled from the cherubino
+\usepackage{booktabs}
+\definecolor{bordeaux}{RGB}{138, 26, 45}
+\definecolor{rowshade}{gray}{0.965}
+% Tick and cross for the yes/no columns of tab:messages and tab:nets.
+\usepackage{pifont}
+\newcommand{\ck}{\textcolor{unipiblue}{\ding{51}}}
+\newcommand{\cx}{\textcolor{bordeaux}{\ding{55}}}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, backgrounds}
+\usepackage{caption}
+
+% Headings: hierarchy by size and whitespace, not weight. Letterspaced
+% uppercase stays reserved for the running head and other small furniture.
+\usepackage{titlesec}
+\titleformat{\section}{\LARGE\firalight\color{unipiblue}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\Large\firalight\color{unipiblue}}{\thesubsection}{0.8em}{}
+\titlespacing*{\section}{0pt}{1.7em}{0.9em}
+\titlespacing*{\subsection}{0pt}{1.3em}{0.6em}
+\titleformat{\subsubsection}{\large\firalight\color{unipiblue}}{\thesubsubsection}{0.8em}{}
+\titlespacing*{\subsubsection}{0pt}{1.0em}{0.45em}
+
+% Block paragraphs, and open leading for the sans body.
+\usepackage[skip=0.55em]{parskip}
+\usepackage{setspace}
+\setstretch{1.15}
+
+\usepackage{enumitem}
+\setlist{itemsep=2pt, topsep=4pt, leftmargin=*}
+
+\usepackage{tocloft}
+% No "Contents" heading: the entries start directly (babel overrides
+% \contentsname at begin-document, so empty it inside babel's hook).
+\addto\captionsenglish{\renewcommand{\contentsname}{}}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{0pt}
+\renewcommand{\cftdotsep}{\cftnodots}
+\renewcommand{\cftsecfont}{\LARGE\color{unipiblue}}
+\renewcommand{\cftsecpagefont}{\LARGE\color{unipiblue}}
+\setlength{\cftbeforesecskip}{0.8em}
+\setlength{\cftsecnumwidth}{2.2em}
+\renewcommand{\cftsubsecfont}{\large}
+\renewcommand{\cftsubsecpagefont}{\large}
+\setlength{\cftbeforesubsecskip}{0.35em}
+\setlength{\cftsubsecindent}{2.2em}
+\setlength{\cftsubsecnumwidth}{2.6em}
+\setcounter{tocdepth}{3}
+
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{unipiblue}\textls[200]{P29: THESIS}}
+\fancyhead[R]{\footnotesize\firalight\color{black!60} Business Process Modelling}
+\fancyfoot[L]{\footnotesize\firalight\color{black!60} Francesco Secoli \,\textperiodcentered\, 502525}
+\fancyfoot[R]{\footnotesize\color{unipiblue}\thepage}
+\renewcommand{\headrule}{{\color{unipiblue}\hrule width\headwidth height 0.5pt}}
+\renewcommand{\footrulewidth}{0pt}
+
+% Links in the accent blue: a cross-reference the reader can see is clickable.
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=unipiblue, citecolor=unipiblue,
+  urlcolor=unipiblue}
+
+% long unbreakable paths in \texttt would otherwise overflow the measure
+\emergencystretch=1em
+\usepackage[capitalise, noabbrev]{cleveref}
+\usepackage{etoolbox}
+\AtBeginEnvironment{tabular}{\footnotesize}
+
+% Reference and caption labels in accent blue at Fira's Medium weight, which
+% reads as an accent against the Light body without the mass of Bold. Use
+% \firamedium and not \fontseries{medium}: under LuaTeX the package loads Fira
+% through fontspec in TU, where only m and b exist and the request falls back
+% to Light in silence. The label word sits inside the hyperlink so it takes the
+% colour too; a bare \crefname leaves it outside, black beside a blue number.
+\newcommand{\reflabel}[1]{{\firamedium #1}}
+\crefformat{table}{#2\reflabel{Table~#1}#3}
+\Crefformat{table}{#2\reflabel{Table~#1}#3}
+\crefrangeformat{table}{#3\reflabel{Tables~#1}#4 to #5\reflabel{#2}#6}
+\crefmultiformat{table}{#2\reflabel{Tables~#1}#3}%
+  { and #2\reflabel{#1}#3}{, #2\reflabel{#1}#3}{, and #2\reflabel{#1}#3}
+\crefformat{figure}{#2\reflabel{Figure~#1}#3}
+\Crefformat{figure}{#2\reflabel{Figure~#1}#3}
+\crefrangeformat{figure}{#3\reflabel{Figures~#1}#4 to #5\reflabel{#2}#6}
+\crefmultiformat{figure}{#2\reflabel{Figures~#1}#3}%
+  { and #2\reflabel{#1}#3}{, #2\reflabel{#1}#3}{, and #2\reflabel{#1}#3}
+\crefformat{section}{#2\reflabel{Section~#1}#3}
+\Crefformat{section}{#2\reflabel{Section~#1}#3}
+\crefrangeformat{section}{#3\reflabel{Sections~#1}#4 to #5\reflabel{#2}#6}
+\crefmultiformat{section}{#2\reflabel{Sections~#1}#3}%
+  { and #2\reflabel{#1}#3}{, #2\reflabel{#1}#3}{, and #2\reflabel{#1}#3}
+\crefformat{subsection}{#2\reflabel{Section~#1}#3}
+\Crefformat{subsection}{#2\reflabel{Section~#1}#3}
+\crefrangeformat{subsection}{#3\reflabel{Sections~#1}#4 to #5\reflabel{#2}#6}
+\crefmultiformat{subsection}{#2\reflabel{Sections~#1}#3}%
+  { and #2\reflabel{#1}#3}{, #2\reflabel{#1}#3}{, and #2\reflabel{#1}#3}
+\DeclareCaptionFont{medseries}{\firamedium}
+\captionsetup{labelfont={color=unipiblue, medseries}}
+
+\renewcommand{\arraystretch}{1.1}
+
+% The assignment, quoted once in Section 1: small type, indented, in a thin
+% grey box.
+\newsavebox{\assignmentbox}
+\newenvironment{assignment}
+  {\par\medskip\begin{lrbox}{\assignmentbox}%
+   \begin{minipage}{\dimexpr\linewidth-1.4cm-16pt-0.4pt\relax}%
+   \footnotesize\setlength{\parskip}{0.4em}%
+   }
+  {\end{minipage}\end{lrbox}%
+   \noindent\hspace*{0.7cm}%
+   \tikz\node[draw=black!30,line width=0.2pt,rounded corners=5pt,inner sep=10pt]
+     {\usebox{\assignmentbox}};%
+   \par\medskip}
+
+% Let a table take more of a page, so the two in Section 1 are not both pushed
+% past the prose that introduces them.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
