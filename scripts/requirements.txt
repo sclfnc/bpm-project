@@ -1,0 +1,4 @@
+pm4py>=2.7
+networkx>=2.6
+numpy>=1.21
+scipy>=1.7
