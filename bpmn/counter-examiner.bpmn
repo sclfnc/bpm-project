@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AUTO-EXTRACTED from collaboration.bpmn. Edit the collaboration and re-run scripts/01_extract_pools.py. -->
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Proc_C" targetNamespace="http://bpmn.io/schema/bpmn"><bpmn:message id="Msg_m9" name="m9 thesis" />
+  <bpmn:message id="Msg_m10a" name="m10a presentation requested" />
+  <bpmn:message id="Msg_m10b" name="m10b no meeting needed" />
+  <bpmn:message id="Msg_m11p" name="m11p date proposal" />
+  <bpmn:message id="Msg_m11a" name="m11a date confirmed" />
+  <bpmn:message id="Msg_m11b" name="m11b counter-proposal" />
+  <bpmn:message id="Msg_m11c" name="m11c date confirmed" />
+  <bpmn:message id="Msg_m13" name="m13 counter-examiner evaluation" />
+  <bpmn:collaboration id="Collab_Proc_C"><bpmn:participant id="Part_C" name="Counter-examiner" processRef="Proc_C" /></bpmn:collaboration><bpmn:process id="Proc_C" name="Counter-examiner (cex)" isExecutable="false">
+    <bpmn:startEvent id="C_start" name="Thesis&#10;Received&#10;(m9)">
+      <bpmn:outgoing>fc1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m9" messageRef="Msg_m9" />
+    </bpmn:startEvent>
+    <bpmn:task id="C_task_assess" name="Read&#10;Thesis">
+      <bpmn:incoming>fc1</bpmn:incoming>
+      <bpmn:outgoing>fc2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="C_g_decide" name="Presentation&#10;Needed?">
+      <bpmn:incoming>fc2</bpmn:incoming>
+      <bpmn:outgoing>fc3</bpmn:outgoing>
+      <bpmn:outgoing>fc11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateThrowEvent id="C_m10at" name="Presentation&#10;Requested&#10;(m10a)">
+      <bpmn:incoming>fc3</bpmn:incoming>
+      <bpmn:outgoing>fc4</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m10a" messageRef="Msg_m10a" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:exclusiveGateway id="C_j_date">
+      <bpmn:incoming>fc4</bpmn:incoming>
+      <bpmn:incoming>fc10b</bpmn:incoming>
+      <bpmn:outgoing>f_C_j_date</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateThrowEvent id="C_m11p" name="Date&#10;Proposed&#10;(m11p)">
+      <bpmn:incoming>f_C_j_date</bpmn:incoming>
+      <bpmn:outgoing>fc5</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m11p" messageRef="Msg_m11p" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:eventBasedGateway id="C_ebg" name="Stud&#10;Replies">
+      <bpmn:incoming>fc5</bpmn:incoming>
+      <bpmn:outgoing>fc6</bpmn:outgoing>
+      <bpmn:outgoing>fc9</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateCatchEvent id="C_m11a" name="Confirmation&#10;Received&#10;(m11a)">
+      <bpmn:incoming>fc6</bpmn:incoming>
+      <bpmn:outgoing>fc7</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m11a" messageRef="Msg_m11a" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="C_m11b" name="Alternative&#10;Received&#10;(m11b)">
+      <bpmn:incoming>fc9</bpmn:incoming>
+      <bpmn:outgoing>fc10</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m11b" messageRef="Msg_m11b" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="C_g_date2" name="Confirm?">
+      <bpmn:incoming>fc10</bpmn:incoming>
+      <bpmn:outgoing>fc10a</bpmn:outgoing>
+      <bpmn:outgoing>fc10b</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateThrowEvent id="C_m10bt" name="Meeting&#10;Waived&#10;(m10b)">
+      <bpmn:incoming>fc11</bpmn:incoming>
+      <bpmn:outgoing>fc12</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m10b" messageRef="Msg_m10b" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="C_m11ct" name="Date&#10;Confirmed&#10;(m11c)">
+      <bpmn:incoming>fc10a</bpmn:incoming>
+      <bpmn:outgoing>fc10c</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m11c" messageRef="Msg_m11c" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:exclusiveGateway id="C_g_merge">
+      <bpmn:incoming>fc10c</bpmn:incoming>
+      <bpmn:incoming>fc7</bpmn:incoming>
+      <bpmn:incoming>fc12</bpmn:incoming>
+      <bpmn:outgoing>fc13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="C_task_eval" name="Write&#10;Evaluation">
+      <bpmn:incoming>fc13</bpmn:incoming>
+      <bpmn:outgoing>fc13b</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:intermediateThrowEvent id="C_m13t" name="Evaluation&#10;Sent&#10;(m13)">
+      <bpmn:incoming>fc13b</bpmn:incoming>
+      <bpmn:outgoing>fc14</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Cdef_m13" messageRef="Msg_m13" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:endEvent id="C_end" name="Cex&#10;End">
+      <bpmn:incoming>fc14</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="fc1" sourceRef="C_start" targetRef="C_task_assess" />
+    <bpmn:sequenceFlow id="fc2" sourceRef="C_task_assess" targetRef="C_g_decide" />
+    <bpmn:sequenceFlow id="fc3" name="Yes" sourceRef="C_g_decide" targetRef="C_m10at" />
+    <bpmn:sequenceFlow id="fc11" name="No" sourceRef="C_g_decide" targetRef="C_m10bt" />
+    <bpmn:sequenceFlow id="fc4" sourceRef="C_m10at" targetRef="C_j_date" />
+    <bpmn:sequenceFlow id="fc10b" name="No" sourceRef="C_g_date2" targetRef="C_j_date" />
+    <bpmn:sequenceFlow id="f_C_j_date" sourceRef="C_j_date" targetRef="C_m11p" />
+    <bpmn:sequenceFlow id="fc5" sourceRef="C_m11p" targetRef="C_ebg" />
+    <bpmn:sequenceFlow id="fc6" sourceRef="C_ebg" targetRef="C_m11a" />
+    <bpmn:sequenceFlow id="fc9" sourceRef="C_ebg" targetRef="C_m11b" />
+    <bpmn:sequenceFlow id="fc7" sourceRef="C_m11a" targetRef="C_g_merge" />
+    <bpmn:sequenceFlow id="fc10" sourceRef="C_m11b" targetRef="C_g_date2" />
+    <bpmn:sequenceFlow id="fc10a" name="Yes" sourceRef="C_g_date2" targetRef="C_m11ct" />
+    <bpmn:sequenceFlow id="fc12" sourceRef="C_m10bt" targetRef="C_g_merge" />
+    <bpmn:sequenceFlow id="fc10c" sourceRef="C_m11ct" targetRef="C_g_merge" />
+    <bpmn:sequenceFlow id="fc13" sourceRef="C_g_merge" targetRef="C_task_eval" />
+    <bpmn:sequenceFlow id="fc13b" sourceRef="C_task_eval" targetRef="C_m13t" />
+    <bpmn:sequenceFlow id="fc14" sourceRef="C_m13t" targetRef="C_end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_Proc_C"><bpmndi:BPMNPlane id="Plane_Proc_C" bpmnElement="Collab_Proc_C"><bpmndi:BPMNShape id="di_Part_C" bpmnElement="Part_C" isHorizontal="true"><omgdc:Bounds x="150" y="80" width="1158" height="565" /></bpmndi:BPMNShape><bpmndi:BPMNShape id="di_C_start" bpmnElement="C_start">
+        <omgdc:Bounds x="232" y="359" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="277" y="357" width="46" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_task_assess" bpmnElement="C_task_assess">
+        <omgdc:Bounds x="200" y="427" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_g_decide" bpmnElement="C_g_decide" isMarkerVisible="true">
+        <omgdc:Bounds x="385" y="442" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="339" y="433" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m10at" bpmnElement="C_m10at">
+        <omgdc:Bounds x="452" y="411" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="441" y="447" width="62" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_j_date" bpmnElement="C_j_date" isMarkerVisible="true">
+        <omgdc:Bounds x="565" y="404" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m11p" bpmnElement="C_m11p">
+        <omgdc:Bounds x="742" y="411" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="708" y="370" width="48" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_ebg" bpmnElement="C_ebg" isMarkerVisible="true">
+        <omgdc:Bounds x="865" y="404" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="872" y="376" width="37" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m11a" bpmnElement="C_m11a">
+        <omgdc:Bounds x="942" y="411" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="928" y="452" width="63" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m11b" bpmnElement="C_m11b">
+        <omgdc:Bounds x="802" y="491" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="833" y="521" width="53" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_g_date2" bpmnElement="C_g_date2" isMarkerVisible="true">
+        <omgdc:Bounds x="655" y="484" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="657" y="472" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m10bt" bpmnElement="C_m10bt">
+        <omgdc:Bounds x="502" y="589" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="540" y="557" width="40" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m11ct" bpmnElement="C_m11ct">
+        <omgdc:Bounds x="1002" y="559" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="954" y="521" width="51" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_g_merge" bpmnElement="C_g_merge" isMarkerVisible="true">
+        <omgdc:Bounds x="1060" y="404" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_task_eval" bpmnElement="C_task_eval">
+        <omgdc:Bounds x="1140" y="389" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_m13t" bpmnElement="C_m13t">
+        <omgdc:Bounds x="1172" y="589" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1134" y="547" width="52" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_C_end" bpmnElement="C_end">
+        <omgdc:Bounds x="1252" y="589" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1260" y="553" width="20" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="di_fc1" bpmnElement="fc1">
+        <omgdi:waypoint x="250" y="395" />
+        <omgdi:waypoint x="250" y="427" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc2" bpmnElement="fc2">
+        <omgdi:waypoint x="300" y="467" />
+        <omgdi:waypoint x="385" y="467" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc3" bpmnElement="fc3">
+        <omgdi:waypoint x="410" y="442" />
+        <omgdi:waypoint x="410" y="429" />
+        <omgdi:waypoint x="452" y="429" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="402" y="410" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc11" bpmnElement="fc11">
+        <omgdi:waypoint x="410" y="492" />
+        <omgdi:waypoint x="410" y="607" />
+        <omgdi:waypoint x="502" y="607" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="392" y="500" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc4" bpmnElement="fc4">
+        <omgdi:waypoint x="488" y="429" />
+        <omgdi:waypoint x="565" y="429" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc10b" bpmnElement="fc10b">
+        <omgdi:waypoint x="655" y="509" />
+        <omgdi:waypoint x="590" y="509" />
+        <omgdi:waypoint x="590" y="454" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="642" y="490" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_f_C_j_date" bpmnElement="f_C_j_date">
+        <omgdi:waypoint x="615" y="429" />
+        <omgdi:waypoint x="742" y="429" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc5" bpmnElement="fc5">
+        <omgdi:waypoint x="778" y="429" />
+        <omgdi:waypoint x="865" y="429" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc6" bpmnElement="fc6">
+        <omgdi:waypoint x="915" y="429" />
+        <omgdi:waypoint x="942" y="429" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc9" bpmnElement="fc9">
+        <omgdi:waypoint x="890" y="454" />
+        <omgdi:waypoint x="890" y="509" />
+        <omgdi:waypoint x="838" y="509" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="882" y="100" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc7" bpmnElement="fc7">
+        <omgdi:waypoint x="978" y="429" />
+        <omgdi:waypoint x="1060" y="429" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc10" bpmnElement="fc10">
+        <omgdi:waypoint x="802" y="509" />
+        <omgdi:waypoint x="705" y="509" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc10a" bpmnElement="fc10a">
+        <omgdi:waypoint x="680" y="534" />
+        <omgdi:waypoint x="680" y="577" />
+        <omgdi:waypoint x="1002" y="577" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="690" y="534" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc12" bpmnElement="fc12">
+        <omgdi:waypoint x="538" y="607" />
+        <omgdi:waypoint x="1100" y="607" />
+        <omgdi:waypoint x="1100" y="439" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc10c" bpmnElement="fc10c">
+        <omgdi:waypoint x="1038" y="577" />
+        <omgdi:waypoint x="1070" y="577" />
+        <omgdi:waypoint x="1070" y="439" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc13" bpmnElement="fc13">
+        <omgdi:waypoint x="1110" y="429" />
+        <omgdi:waypoint x="1140" y="429" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc13b" bpmnElement="fc13b">
+        <omgdi:waypoint x="1190" y="469" />
+        <omgdi:waypoint x="1190" y="589" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fc14" bpmnElement="fc14">
+        <omgdi:waypoint x="1208" y="607" />
+        <omgdi:waypoint x="1252" y="607" />
+      </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn:definitions>

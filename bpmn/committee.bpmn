@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AUTO-EXTRACTED from collaboration.bpmn. Edit the collaboration and re-run scripts/01_extract_pools.py. -->
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Proc_K" targetNamespace="http://bpmn.io/schema/bpmn"><bpmn:message id="Msg_m12" name="m12 supervisor evaluation" />
+  <bpmn:message id="Msg_m13" name="m13 counter-examiner evaluation" />
+  <bpmn:message id="Msg_m14" name="m14 convocation" />
+  <bpmn:message id="Msg_m15" name="m15 grade" />
+  <bpmn:message id="Msg_m16" name="m16 graduation registration" />
+  <bpmn:collaboration id="Collab_Proc_K"><bpmn:participant id="Part_K" name="Committee" processRef="Proc_K" /></bpmn:collaboration><bpmn:process id="Proc_K" name="Committee (comm)" isExecutable="false">
+    <bpmn:intermediateCatchEvent id="K_m12c" name="Sup Evaluation&#10;Received&#10;(m12)">
+      <bpmn:incoming>fk2</bpmn:incoming>
+      <bpmn:outgoing>fk4</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Kdef_m12" messageRef="Msg_m12" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:parallelGateway id="K_split">
+      <bpmn:incoming>fk1</bpmn:incoming>
+      <bpmn:outgoing>fk2</bpmn:outgoing>
+      <bpmn:outgoing>fk3</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:startEvent id="K_start" name="Registration&#10;Received&#10;(m16)">
+      <bpmn:outgoing>fk1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Kdef_m16" messageRef="Msg_m16" />
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="K_m13c" name="Cex Evaluation&#10;Received&#10;(m13)">
+      <bpmn:incoming>fk3</bpmn:incoming>
+      <bpmn:outgoing>fk5</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Kdef_m13" messageRef="Msg_m13" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:parallelGateway id="K_join">
+      <bpmn:incoming>fk4</bpmn:incoming>
+      <bpmn:incoming>fk5</bpmn:incoming>
+      <bpmn:outgoing>fk6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:intermediateThrowEvent id="K_m14t" name="Stud&#10;Convoked&#10;(m14)">
+      <bpmn:incoming>fk6</bpmn:incoming>
+      <bpmn:outgoing>fk7</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Kdef_m14" messageRef="Msg_m14" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:task id="K_task_exam" name="Examine&#10;Stud">
+      <bpmn:incoming>fk7</bpmn:incoming>
+      <bpmn:outgoing>fk8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="K_task_decide" name="Meet and&#10;Decide&#10;Grade">
+      <bpmn:incoming>fk8</bpmn:incoming>
+      <bpmn:outgoing>fk9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:intermediateThrowEvent id="K_m15t" name="Grade&#10;Notified&#10;(m15)">
+      <bpmn:incoming>fk9</bpmn:incoming>
+      <bpmn:outgoing>fk10</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Kdef_m15" messageRef="Msg_m15" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:endEvent id="K_end" name="Com&#10;End">
+      <bpmn:incoming>fk10</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="fk2" sourceRef="K_split" targetRef="K_m12c" />
+    <bpmn:sequenceFlow id="fk4" sourceRef="K_m12c" targetRef="K_join" />
+    <bpmn:sequenceFlow id="fk1" sourceRef="K_start" targetRef="K_split" />
+    <bpmn:sequenceFlow id="fk3" sourceRef="K_split" targetRef="K_m13c" />
+    <bpmn:sequenceFlow id="fk5" sourceRef="K_m13c" targetRef="K_join" />
+    <bpmn:sequenceFlow id="fk6" sourceRef="K_join" targetRef="K_m14t" />
+    <bpmn:sequenceFlow id="fk7" sourceRef="K_m14t" targetRef="K_task_exam" />
+    <bpmn:sequenceFlow id="fk8" sourceRef="K_task_exam" targetRef="K_task_decide" />
+    <bpmn:sequenceFlow id="fk9" sourceRef="K_task_decide" targetRef="K_m15t" />
+    <bpmn:sequenceFlow id="fk10" sourceRef="K_m15t" targetRef="K_end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_Proc_K"><bpmndi:BPMNPlane id="Plane_Proc_K" bpmnElement="Collab_Proc_K"><bpmndi:BPMNShape id="di_Part_K" bpmnElement="Part_K" isHorizontal="true"><omgdc:Bounds x="150" y="80" width="1698" height="161" /></bpmndi:BPMNShape><bpmndi:BPMNShape id="di_K_m12c" bpmnElement="K_m12c">
+        <omgdc:Bounds x="422" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="403" y="138" width="74" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_split" bpmnElement="K_split">
+        <omgdc:Bounds x="325" y="133" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_start" bpmnElement="K_start">
+        <omgdc:Bounds x="262" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="200" y="138" width="59" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_m13c" bpmnElement="K_m13c">
+        <omgdc:Bounds x="1292" y="180" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1223" y="155" width="74" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_join" bpmnElement="K_join">
+        <omgdc:Bounds x="1335" y="133" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_m14t" bpmnElement="K_m14t">
+        <omgdc:Bounds x="1432" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1426" y="181" width="50" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_task_exam" bpmnElement="K_task_exam">
+        <omgdc:Bounds x="1490" y="118" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_task_decide" bpmnElement="K_task_decide">
+        <omgdc:Bounds x="1610" y="118" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_m15t" bpmnElement="K_m15t">
+        <omgdc:Bounds x="1732" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1731" y="181" width="38" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_K_end" bpmnElement="K_end">
+        <omgdc:Bounds x="1792" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1798" y="180" width="24" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="di_fk2" bpmnElement="fk2">
+        <omgdi:waypoint x="350" y="133" />
+        <omgdi:waypoint x="350" y="118" />
+        <omgdi:waypoint x="422" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk4" bpmnElement="fk4">
+        <omgdi:waypoint x="458" y="118" />
+        <omgdi:waypoint x="1360" y="118" />
+        <omgdi:waypoint x="1360" y="133" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk1" bpmnElement="fk1">
+        <omgdi:waypoint x="298" y="158" />
+        <omgdi:waypoint x="325" y="158" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk3" bpmnElement="fk3">
+        <omgdi:waypoint x="350" y="183" />
+        <omgdi:waypoint x="350" y="198" />
+        <omgdi:waypoint x="1292" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk5" bpmnElement="fk5">
+        <omgdi:waypoint x="1328" y="198" />
+        <omgdi:waypoint x="1360" y="198" />
+        <omgdi:waypoint x="1360" y="183" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk6" bpmnElement="fk6">
+        <omgdi:waypoint x="1385" y="158" />
+        <omgdi:waypoint x="1432" y="158" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk7" bpmnElement="fk7">
+        <omgdi:waypoint x="1468" y="158" />
+        <omgdi:waypoint x="1490" y="158" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk8" bpmnElement="fk8">
+        <omgdi:waypoint x="1590" y="158" />
+        <omgdi:waypoint x="1610" y="158" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk9" bpmnElement="fk9">
+        <omgdi:waypoint x="1710" y="158" />
+        <omgdi:waypoint x="1732" y="158" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_fk10" bpmnElement="fk10">
+        <omgdi:waypoint x="1768" y="158" />
+        <omgdi:waypoint x="1792" y="158" />
+      </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn:definitions>
