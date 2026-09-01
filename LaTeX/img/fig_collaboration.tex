@@ -1,0 +1,17 @@
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \node[anchor=south west, inner sep=0] (img) at (0,0)
+      {\includegraphics[width=\linewidth]{../bpmn/img/collaboration.pdf}};
+    \begin{scope}[x={(img.south east)}, y={(img.north west)}]
+      \foreach \bx in {0.183, 0.487, 0.860}
+        \draw[dashed, thick, unipiblue] (\bx, 0) -- (\bx, 1.105);
+      \foreach \bx/\lbl in {0.091/{Interest and Topic}, 0.335/{Thesis Development},
+                            0.673/{Submission and Assessment}, 0.930/{Graduation}}
+        \node[overlay, font=\scriptsize\bfseries, text=unipiblue] at (\bx, 1.075) {\lbl};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{The collaboration (\texttt{bpmn/collaboration.bpmn}), cut into the four phases of
+    \cref{sec:collaboration}.}
+  \label{fig:collaboration}
+\end{figure}
